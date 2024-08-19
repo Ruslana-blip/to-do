@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="/css/style.min.css" />
+	</head>
+	<body>
+		<section class="do">
+			<div class="do__container">
+				<div class="do__header">
+					<h2 class="do__title">To-Do List</h2>
+					<!-- <img src="/svg/notebook-address-book-svgrepo-com.svg" alt="svg" /> -->
+					<svg width="110" height="90">
+						<use xlink:href="/svg/sprite.svg#notebook"></use>
+					</svg>
+				</div>
+				<form name="form-actions">
+					<div class="do__actions">
+						<input
+							type="text"
+							class="do__input do__input-enter"
+							name="input-enter"
+							value=""
+							placeholder="Add your text"
+							tabindex="1"
+						/>
+						<input
+							type="button"
+							class="do__input do__input-active"
+							name="input-active"
+							value="Add"
+							tabindex="2"
+						/>
+					</div>
+
+					<div class="do__items"></div>
+				</form>
+			</div>
+		</section>
+		<script src="sctipt.js"></script>
+	</body>
+</html>
