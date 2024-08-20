@@ -1,42 +1,68 @@
 'use strict';
 const form = document.forms['form-actions'];
 const inputEnter = form['input-enter'];
-const items = document.querySelector('.do__items');
-let i = 0;
+const htmlList = document.querySelector('.do__items');
+let list = [];
+
 const addItem = e => {
-	if (inputEnter.value.length > 0) {
-		i += 1;
-		items.insertAdjacentHTML(
-			'beforeend',
-			`<div class="do__item">
-      <input type="checkbox" id="checkbox-${i}" class="do__item-input"> 
-      <label class="do__item-label" for="checkbox-${i}">${inputEnter.value}</label>
-      <img class="do__delete" src="/svg/delete.svg" alt="Delete icon"></div>`
-		);
-		inputEnter.value = '';
-		saveData();
-	}
+	e.preventDefault();
+	if (!inputEnter.value) return;
+	const todo = {
+		id: Date.now(),
+		value: inputEnter.value,
+	};
+	list.push(todo);
+	drawHtml(todo);
+	inputEnter.value = '';
+	saveData();
+};
+
+const drawHtml = ({ id, value }) => {
+	htmlList.insertAdjacentHTML(
+		'beforeend',
+		/*html*/ `
+			<li class="do__item">
+				<input 
+					data-id="${id}"
+					type="checkbox" 
+					id="checkbox-${id}"
+					class="do__item-input"
+				> 
+				<label 
+					class="do__item-label" 
+					for="checkbox-${id}"
+				>
+					${value}
+				</label>
+				<img 
+					class="do__delete" 
+					src="./svg/delete.svg" 
+					alt="Delete icon"
+				>
+			</li>`
+	);
 };
 
 const deleteItem = e => {
-	if (e.target.classList.contains('do__delete')) {
+	if (e.target.closest('.do__delete')) {
 		e.target.closest('.do__item').remove();
+		list = list.filter(
+			({ id }) => id !== +e.target.closest('.do__item').dataset.id
+		);
 		saveData();
 	}
 };
 
-const saveData = () => {
-	localStorage.setItem('data', items.innerHTML);
-	localStorage.setItem('index', i);
-};
+const saveData = () => localStorage.setItem('todoList', JSON.stringify(list));
 
 const showData = () => {
-	items.innerHTML = localStorage.getItem('data');
-	if (localStorage.getItem('index')) {
-		i = +localStorage.getItem('index');
-	}
+	const data = JSON.parse(localStorage.getItem('todoList'));
+	if (!data) return;
+	list.push(...data);
+	data.forEach(({ id, value }) => drawHtml({ id, value }));
 };
 
-window.addEventListener('load', showData);
+document.addEventListener('DOMContentLoaded', showData);
 form['input-active'].addEventListener('click', addItem);
-items.addEventListener('click', deleteItem);
+form.addEventListener('submit', addItem);
+htmlList.addEventListener('click', deleteItem);
