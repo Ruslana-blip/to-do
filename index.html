@@ -2,25 +2,16 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0"
-		/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
-		<link
-			rel="stylesheet"
-			href="/css/style.min.css"
-		/>
+		<link rel="stylesheet" href="/css/style.min.css" />
 	</head>
 	<body>
 		<section class="do">
 			<div class="do__container">
 				<header class="do__header">
 					<h2 class="do__title">To-Do List</h2>
-					<svg
-						width="110"
-						height="90"
-					>
+					<svg width="110" height="90">
 						<use xlink:href="./svg/sprite.svg#notebook"></use>
 					</svg>
 				</header>
@@ -44,9 +35,12 @@
 						</button>
 					</div>
 				</form>
-				<ul class="do__items"></ul>
+				<ul class="do__items">
+					<div class="loader"></div>
+				</ul>
 			</div>
 		</section>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<script src="sctipt.js"></script>
 	</body>
 </html>

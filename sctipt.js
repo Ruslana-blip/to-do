@@ -66,3 +66,66 @@ document.addEventListener('DOMContentLoaded', showData);
 form['input-active'].addEventListener('click', addItem);
 form.addEventListener('submit', addItem);
 htmlList.addEventListener('click', deleteItem);
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com/';
+
+// async function getToDoList (){
+// 	try{
+// 		const { data } = await axios.get(`${BASE_URL}todos`, {
+// 			params: {
+// 				"userId": 1,
+// 			});
+// 			data.forEach(elem=> {
+// 				addItem(elem);
+// 	});
+// }
+
+async function getToDoList() {
+	try {
+		const { data } = await axios.get(`${BASE_URL}todos`, {
+			params: {
+				userId: 1,
+				_limit: 5,
+			},
+		});
+		console.log(data);
+		data.forEach(elem => {
+			showUser(elem);
+		});
+	} catch {
+		htmlList.insertAdjacentHTML(
+			'afterbegin',
+			`<span class="error">Виникла помилка</span>`
+		);
+	} finally {
+		const loader = document.querySelector('.loader');
+		loader.style.display = 'none';
+	}
+}
+
+const showUser = ({ id, title, completed }) => {
+	htmlList.insertAdjacentHTML(
+		'beforeend',
+		/*html*/ `
+		<li class="do__item">
+				<input 
+					type="checkbox" 
+					${completed ? 'checked' : ''}
+					id="checkbox-${id}"
+					class="do__item-input"
+				> 
+				<label 
+					class="do__item-label" 
+					for="checkbox-${id}"
+				>
+					${title}
+				</label>
+				<img 
+					class="do__delete" 
+					src="./svg/delete.svg" 
+					alt="Delete icon"
+				>
+			</li>`
+	);
+};
+getToDoList();
